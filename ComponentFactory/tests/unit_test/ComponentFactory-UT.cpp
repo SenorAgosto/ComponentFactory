@@ -64,7 +64,7 @@ namespace {
         REQUIRE CHECK_EQUAL(2U, components.size());
         REQUIRE CHECK_EQUAL(2U, descriptions.size());
         
-        CHECK_EQUAL("description", descriptions.find("impl1")->second);
-        CHECK_EQUAL("desc", descriptions.find("impl2")->second);
+        CHECK_EQUAL("description", InterfaceFactory::getComponentDescription("impl1"));
+        CHECK_EQUAL("desc", InterfaceFactory::getComponentDescription("impl2"));
     }
 }

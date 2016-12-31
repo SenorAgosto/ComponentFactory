@@ -26,6 +26,9 @@ namespace ComponentFactory {
 
         // return list of registered components
         static std::vector<std::string> getComponentNames();
+        
+        // return component description, or empty string
+        static std::string getComponentDescription(const std::string& name);
         static const DescriptionInfo& getComponentDescriptions();
 
         // destroy all factory components
@@ -87,6 +90,21 @@ namespace ComponentFactory {
 
         sort(begin(names), end(names));
         return names;
+    }
+    
+    template<class Interface>
+    std::string ComponentFactory<Interface>::getComponentDescription(const std::string& name)
+    {
+        auto& factory = ComponentFactory<Interface>::instance();
+        auto& descriptions = factory.descriptions_;
+        
+        auto iter = descriptions.find(name);
+        if(iter != descriptions.end())
+        {
+            return iter->second;
+        }
+        
+        return "";
     }
     
     template<class Interface>
