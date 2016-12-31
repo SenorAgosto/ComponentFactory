@@ -44,6 +44,7 @@ Access components through factory method.
 Get component names and descriptions.
 
     auto components = InterfaceFactory::getComponentNames();
+    auto description = InterfaceFactory::getComponentDescription("component1");
     auto descriptions = InterfaceFactory::getComponentDescriptions();
 
 ### Dependencies 
