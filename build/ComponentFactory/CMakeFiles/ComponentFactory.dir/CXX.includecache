@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+..//ComponentFactory/Exceptions.hpp
+stdexcept
+-
+string
+-
+
+/Users/austirg/proj/ComponentFactory/ComponentFactory/src/Exceptions.cpp
+ComponentFactory/Exceptions.hpp
+-
+

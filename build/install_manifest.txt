@@ -1,0 +1,10 @@
+/usr/local/include/ComponentFactory/ComponentFactory.hpp
+/usr/local/include/ComponentFactory/Exceptions.hpp
+/usr/local/include/ComponentFactory/RegisterComponent.hpp
+/usr/local/include/ComponentFactory/ComponentFactory.hpp
+/usr/local/include/ComponentFactory/Exceptions.hpp
+/usr/local/include/ComponentFactory/RegisterComponent.hpp
+/usr/local/include/ComponentFactory/ComponentFactory.hpp
+/usr/local/include/ComponentFactory/Exceptions.hpp
+/usr/local/include/ComponentFactory/RegisterComponent.hpp
+/usr/local/lib/libComponentFactory.a
