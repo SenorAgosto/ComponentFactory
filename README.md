@@ -4,7 +4,7 @@ A interface for instantiating components with a human readable name & descriptio
 
 ### Quick Tour 
 
-You define a pure virtual interface for your components to be stored in the factory. 
+You define a pure virtual component interface, the ComponentFactory then instantiates concrete instances of this interface returning references to them on request.
 
     class Interface 
     {
@@ -44,6 +44,7 @@ Access components through factory method.
 Get component names and descriptions.
 
     auto components = InterfaceFactory::getComponentNames();
+    auto description = InterfaceFactory::getComponentDescription("component1");
     auto descriptions = InterfaceFactory::getComponentDescriptions();
 
 ### Dependencies 
