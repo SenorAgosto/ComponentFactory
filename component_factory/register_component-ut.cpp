@@ -23,12 +23,12 @@ namespace {
 
     struct RegisterComponentFixture
     {
-        using InterfaceFactory = ComponentFactory::ComponentFactory<Interface>;
+        using InterfaceFactory = component_factory::ComponentFactory<Interface>;
         
         RegisterComponentFixture()
         {
-            ComponentFactory::RegisterComponent<InterfaceFactory, Impl1>("impl1", "description");
-            ComponentFactory::RegisterComponent<InterfaceFactory, Impl2>("impl2", "desc", 1, 2);
+            component_factory::RegisterComponent<InterfaceFactory, Impl1>("impl1", "description");
+            component_factory::RegisterComponent<InterfaceFactory, Impl2>("impl2", "desc", 1, 2);
         }
         
         ~RegisterComponentFixture()

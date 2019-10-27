@@ -1,5 +1,5 @@
-#include "./platform/UnitTestSupport.hpp"
-#include <ComponentFactory/ComponentFactory.hpp>
+#include <platform/ut_support.hpp>
+#include <component_factory/component_factory.hpp>
 
 namespace {
 
@@ -22,7 +22,7 @@ namespace {
 
     struct ComponentFactoryFixture
     {
-        using InterfaceFactory = ComponentFactory::ComponentFactory<Interface>;
+        using InterfaceFactory = component_factory::ComponentFactory<Interface>;
         
         ComponentFactoryFixture()
         {

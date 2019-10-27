@@ -1,6 +1,6 @@
 #pragma once 
 
-#include <component_factory/Exceptions.hpp>
+#include <component_factory/exceptions.hpp>
 
 #include <algorithm>
 #include <memory>
