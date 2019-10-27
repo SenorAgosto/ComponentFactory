@@ -1,6 +1,6 @@
-#include "./platform/UnitTestSupport.hpp"
-#include <ComponentFactory/ComponentFactory.hpp>
-#include <ComponentFactory/RegisterComponent.hpp>
+#include <platform/ut_support.hpp>
+#include <component_factory/component_factory.hpp>
+#include <component_factory/register_component.hpp>
 
 namespace {
 

@@ -1,6 +1,6 @@
 #pragma once 
 
-#include <ComponentFactory/Exceptions.hpp>
+#include <component_factory/Exceptions.hpp>
 
 #include <algorithm>
 #include <memory>
@@ -9,7 +9,7 @@
 #include <utility>
 #include <vector>
 
-namespace ComponentFactory {
+namespace component_factory {
 
     template<class Interface>
     class ComponentFactory

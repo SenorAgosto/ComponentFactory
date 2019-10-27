@@ -3,7 +3,7 @@
 #include <string>
 #include <utility>
 
-namespace ComponentFactory {
+namespace component_factory {
 
     // a helper class which wraps the factory
     // registerComponent() method to avoid ambiguities

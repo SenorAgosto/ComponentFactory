@@ -2,7 +2,7 @@
 #include <stdexcept>
 #include <string>
 
-namespace ComponentFactory {
+namespace component_factory {
 
     class ComponentDoesntExist : public std::runtime_error 
     {
