@@ -7,8 +7,9 @@
 namespace component_factory { namespace details {
 
 	template<typename Tuple, typename Tag, size_t N> 
-	struct search_tuple
+	class search_tuple
 	{
+	public:
 		enum { npos = std::numeric_limits<size_t>::max() };
 
 		size_t operator()() 
@@ -31,8 +32,9 @@ namespace component_factory { namespace details {
 	};
 
 	template<typename Tuple, typename Tag>
-	struct search_tuple<Tuple, Tag, 0>
+	class search_tuple<Tuple, Tag, 0>
 	{
+	public:
 		enum { npos = std::numeric_limits<size_t>::max() };
 
 		size_t operator()()
