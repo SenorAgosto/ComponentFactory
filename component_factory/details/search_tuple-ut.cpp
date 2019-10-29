@@ -21,9 +21,8 @@ namespace {
 
 		using components_t = decltype(components);
 
-		search_tuple<components_t, Tag1, std::tuple_size<components_t>::value - 1> searcher;
+		search_tuple<components_t, Tag1> searcher;
 
-		auto which = searcher();
-		CHECK_EQUAL(0U, which);
+		CHECK_EQUAL(0U, searcher.which());
 	}
 }

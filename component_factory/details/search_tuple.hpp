@@ -6,53 +6,42 @@
 
 namespace component_factory { namespace details {
 
-	template<typename Tuple, typename Tag, size_t N> 
-	class search_tuple
+	template<typename Tuple, typename Tag, size_t Stop, size_t N> 
+	class tuple_iterator : public tuple_iterator<Tuple, Tag, Stop, N + 1>
 	{
+	private:
+		using base_t = tuple_iterator<Tuple, Tag, Stop, N + 1>;
+
+		using component_t = std::tuple_element_t<N, Tuple>; 
+		using tag_t = std::tuple_element_t<0, component_t>;
+
 	public:
-		enum { npos = std::numeric_limits<size_t>::max() };
-
-		size_t operator()() 
+		constexpr inline
+		size_t which() const 
 		{
-			using component_t = typename std::tuple_element<N, Tuple>::type;
-			using tag_t = typename std::tuple_element<0, component_t>::type;
-
-			// TODO: we should also ensure:
-			//  - v is a tuple size 2
-			// 	- type of element 0 is E
-			if constexpr ( std::is_same<tag_t, Tag>::value)
+			if constexpr(std::is_same<Tag, tag_t>::value)
 			{
 				return N;
 			}
-			else 
+			else
 			{
-				return search_tuple<Tuple, Tag, N - 1>()();
+				return base_t::which();
 			}
 		}
 	};
 
-	template<typename Tuple, typename Tag>
-	class search_tuple<Tuple, Tag, 0>
+	template<typename Tuple, typename Tag, size_t Stop>
+	class tuple_iterator<Tuple, Tag, Stop, Stop>
 	{
 	public:
 		enum { npos = std::numeric_limits<size_t>::max() };
 
-		size_t operator()()
-		{	
-			using component_t = typename std::tuple_element<0, Tuple>::type;
-			using tag_t = typename std::tuple_element<0, component_t>::type;
-
-			if constexpr (std::is_same<tag_t, Tag>::value)
-			{
-				return 0;
-			}
-			else 
-			{
-				return npos;
-				// TODO: conditional error? 
-				// static_assert(std::is_same<tag_t, Tag>::value, "Unable to locate component by Tag");
-			}
-		}
+		constexpr inline
+		size_t which() const { return npos; }
 	};
 
+	template<typename Tuple, typename Tag>
+	struct search_tuple : public tuple_iterator<Tuple, Tag, std::tuple_size_v<Tuple>, 0>
+	{
+	};
 }}
