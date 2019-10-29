@@ -1,6 +1,8 @@
 #include <platform/ut_support.hpp>
 #include <component_factory/details/search_tuple.hpp>
 
+#include <limits>
+
 namespace {
 
 	using namespace component_factory::details;
@@ -15,6 +17,15 @@ namespace {
 	C make_component()
 	{
 		return C();
+	}
+
+	TEST(search_empty_tuple)
+	{
+		std::tuple<> tuple;
+		using components_t = decltype(tuple);
+
+		tuple_search<components_t, Tag1> searcher;
+		CHECK_EQUAL(searcher.npos, searcher.which());
 	}
 
 	TEST(search_tuple_size1)
@@ -38,6 +49,12 @@ namespace {
 
 		tuple_search<components_t, Tag2> searcher;
 		CHECK_EQUAL(1U, searcher.which());
+	}
+
+	TEST(search_empty_tuple_with_search_func)
+	{
+		std::tuple<> tuple;
+		CHECK_EQUAL(std::numeric_limits<size_t>::max(), search_tuple(tuple, tag_1));
 	}
 
 	TEST(search_tuple_with_search_func)
