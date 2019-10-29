@@ -1,9 +1,12 @@
 #pragma once 
 #include <component_factory/component.hpp>
+#include <component_factory/error.hpp>
 #include <component_factory/details/search_tuple.hpp>
 
 #include <functional>
+#include <limits>
 #include <tuple>
+#include <type_traits>
 
 namespace component_factory {
 
@@ -21,6 +24,8 @@ namespace component_factory {
 	class ComponentFactory
 	{
 	public:
+
+		enum { npos = std::numeric_limits<size_t>::max() };
 
 		// used for default construction only
 		ComponentFactory(Components&&... components)
@@ -56,11 +61,28 @@ namespace component_factory {
 		template<typename Tag, typename... Args>
 		auto construct(Tag tag, Args&&... args) 
 		{
-			// constexpr auto which = details::search_tuple(components_, tag);
-			
-			// is invocable with args
+			constexpr auto which = details::search_tuple<ComponentContainer, Tag>();
+			if constexpr(which == npos)
+			{
+				return Error { "Component not found" };
+			}
+			else 
+			{
+				using component_t = std::tuple_element_t<which, ComponentContainer>;
+				using func_t = std::tuple_element_t<1, component_t>;
 
-			return true;
+				if constexpr(std::is_invocable_v<func_t, Args...>)
+				{
+					auto func = std::get<1>(std::get<which>(components_));
+					auto params = capture_by_copy(std::forward<Args>(args)...);
+
+					return std::apply(func, params);
+				}
+				else
+				{
+					return Error { "Component not invocable with supplied arguments" };
+				}
+			}
 		}
 
 		constexpr
