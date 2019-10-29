@@ -10,7 +10,7 @@ namespace component_factory { namespace details {
 	};
 
 	template<typename Tuple, typename Tag>
-	constexpr size_t search_tuple(Tuple tuple, Tag tag)
+	constexpr size_t search_tuple()
 	{
 		return tuple_search<Tuple, Tag>().which();
 	}

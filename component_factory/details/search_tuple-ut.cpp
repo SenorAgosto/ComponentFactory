@@ -54,7 +54,10 @@ namespace {
 	TEST(search_empty_tuple_with_search_func)
 	{
 		std::tuple<> tuple;
-		CHECK_EQUAL(std::numeric_limits<size_t>::max(), search_tuple(tuple, tag_1));
+		using tuple_t = decltype(tuple);
+
+		auto which = search_tuple<tuple_t, Tag1>();
+		CHECK_EQUAL(std::numeric_limits<size_t>::max(), which);
 	}
 
 	TEST(search_tuple_with_search_func)
@@ -63,8 +66,12 @@ namespace {
 		auto component_2 = std::make_pair(tag_2, make_component<Component2>);
 
 		auto components = std::make_tuple(component_1, component_2); 
+		using components_t = decltype(components);
 
-		CHECK_EQUAL(0U, search_tuple(components, tag_1));
-		CHECK_EQUAL(1U, search_tuple(components, tag_2));
+		auto which = search_tuple<components_t, Tag1>();
+		CHECK_EQUAL(0U, which);
+
+		which = search_tuple<components_t, Tag2>();
+		CHECK_EQUAL(1U, which);
 	}
 }
