@@ -7,8 +7,8 @@ namespace component_factory {
     using Component = std::pair<Tag, Func>;
 
     template<typename Tag, typename Func>
-    constexpr Component make_component(Tag&& tag, Func&& func)
+    constexpr Component<Tag, Func> make_component(Tag&& tag, Func&& func)
     {
-        return std::pair(std::move(tag), std::move(func));
+        return std::make_tuple(std::move(tag), std::move(func));
     }
 }
