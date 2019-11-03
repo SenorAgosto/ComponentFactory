@@ -9,6 +9,7 @@ namespace {
 	struct Tag2 {} static tag_2;
 	struct Tag3 {} static tag_3;	
 	struct Tag4 {} static tag_4;
+	struct tag5 {} static tag_5;
 
 	struct Component1 { 
 		std::string foo() { return "hello"; }
@@ -23,7 +24,7 @@ namespace {
 	};
 
 	struct Component4 {
-		Component4(int i_in, const std::string& s_in)
+		Component4(int i_in, const std::string& s_in = "world")
 			: i(i_in)
 			, s(s_in)
 		{
@@ -94,21 +95,28 @@ namespace {
 		CHECK_EQUAL("Component not found", component_4.what);
 	}
 
-
-
 	TEST(verify_construction_with_construction_parameters)
 	{
-		auto factory = ComponentFactory().
-			register_component(tag_4, [](int i, const std::string& s){
+		auto factory = ComponentFactory()
+			.register_component(tag_4, [](int i, const std::string& s){
 				auto comp4 = Component4(i,s);
 				return comp4;
-			}); 
+			})
+			.register_component(tag_5, [](int i) {
+				return Component4(i);
+			});
 
 		auto component_4 = factory.construct(tag_4, 20, "hello");
 		static_assert(std::is_same<Component4, decltype(component_4)>::value,
 			"component_4 is not 'struct Component4'");
 		CHECK_EQUAL(20, component_4.i);
 		CHECK_EQUAL("hello", component_4.s);
+
+		auto component_5 = factory.construct(tag_5, 40);
+		static_assert(std::is_same<Component4, decltype(component_4)>::value,
+			"component_5 is not 'struct Component5'");
+		CHECK_EQUAL(40, component_5.i);
+		CHECK_EQUAL("world", component_5.s);
 	}
 	
 	
