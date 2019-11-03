@@ -22,6 +22,17 @@ namespace {
 		constexpr static const uint8_t two = 2; 
 	};
 
+	struct Component4 {
+		Component4(int i_in, const std::string& s_in)
+			: i(i_in)
+			, s(s_in)
+		{
+		}
+	
+		int i;
+		std::string s;
+	};
+
 	template<typename C>
 	C make_comp()
 	{
@@ -83,5 +94,22 @@ namespace {
 		CHECK_EQUAL("Component not found", component_4.what);
 	}
 
+
+
+	TEST(verify_construction_with_construction_parameters)
+	{
+		auto factory = ComponentFactory().
+			register_component(tag_4, [](int i, const std::string& s){
+				auto comp4 = Component4(i,s);
+				return comp4;
+			}); 
+
+		auto component_4 = factory.construct(tag_4, 20, "hello");
+		static_assert(std::is_same<Component4, decltype(component_4)>::value,
+			"component_4 is not 'struct Component4'");
+		CHECK_EQUAL(20, component_4.i);
+		CHECK_EQUAL("hello", component_4.s);
+	}
+	
 	
 }
