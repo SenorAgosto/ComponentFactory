@@ -118,6 +118,20 @@ namespace {
 		CHECK_EQUAL(40, component_5.i);
 		CHECK_EQUAL("world", component_5.s);
 	}
-	
+
+	// TODO: implement this test, but it should be in a meson fail 
+	// file, those are special files declared via meson where if the code
+	// compiles, then it should fail the build.	
+	TEST(verify_construction_fails_when_not_invokable_with_supplied_params)
+	{
+		auto factory = ComponentFactory()
+			.register_component(tag_1, [](int i){
+				return Component1();
+			});
+		
+		// ensure an error is returned if we attempt to construct
+		// a component with incorrect arguments
+		auto comp1 = factory.construct(tag_1);
+	}
 	
 }
