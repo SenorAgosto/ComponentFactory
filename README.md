@@ -1,55 +1,61 @@
 # ComponentFactory
 
-A interface for instantiating components with a human readable name & description, then accessing components through a factory method with the human readable name.
+ComponentFactory is a compile-time construct for lazily constructing class/structs. When the factory is constructed, a tag type (name) of a component and the function for constructing the component are stored as type information. Later, a caller can construct a component by using the tag type reference and passing any required arguments. 
 
 ### Quick Tour 
 
-You define a pure virtual component interface, the ComponentFactory then instantiates concrete instances of this interface returning references to them on request.
+Define your components:
 
-    class Interface 
+    class Component1 
     {
     public:
-        virtual ~Interface() {}
-        virtual void foo() = 0;
+        void foo();
     };
-
-Define as many concrete implementations as needed.
-
-    class Impl : public Interface 
+    
+    class Component2
     {
-    public:
-        void foo() override {}
     };
-
-    class Impl2 : public Interface 
+    
+    struct Component3 
     {
-    public:
-        Impl2(int i, int j) {}
-        void foo() override {}
     };
+    
+Define one tag type per component:
 
-Setup the ComponentFactory.
+    struct Component1Tag {} static component_1;
+    struct Component2Tag {} static component_2;
+    struct Component3Tag {} static component_3;
 
-    using InterfaceFactory = component_factory::ComponentFactory<Interface>;
+Use tags to register constructors with the factory. Constructors can be lambdas or functions: 
 
-Create components and register them with the factory. 
+    template<typename C>
+    C make_comp()
+    {
+        return C();
+    }
+    
+    auto factory = ComponentFactory()
+        .register_component(component_1, [](int j){
+            return Component1(j);
+        })
+        .register_component(component_2, make_comp<Component2>);
 
-    InterfaceFactory::registerComponent<Impl>("impl", "describe component");
-    InterfaceFactory::registerComponent<Impl2>("impl2", "describe", 1, 2);
+Later, construct components by invoking the factory with the tag: 
 
-Access components through factory method.
+    auto comp1 = factory.construct(component_1, 10);
+    auto comp2 = factory.construct(component_2);
 
-    auto& component = InterfaceFactory::getComponent("impl");
+Note, passing incorrect parameters or the incorrect number of parameters results in the factory returning a sentinel type called 'Error'. Therefore, your build will fail if you attempt to use your component's interface on the sentinel type. 
 
-Get component names and descriptions.
+    auto comp1 = factory.construct(component_1, 10);
+    comp1.foo();    // ok
 
-    auto components = InterfaceFactory::getComponentNames();
-    auto description = InterfaceFactory::getComponentDescription("component1");
-    auto descriptions = InterfaceFactory::getComponentDescriptions();
+    auto comp1 = factory.construct(component_1, "wrong type");
+    comp1.foo();    // error: no member named 'foo' in 'component_factory::Error'
 
 ### Dependencies 
 
-- c++11
+- c++17
 
 Used for unit testing on all platforms:
 
