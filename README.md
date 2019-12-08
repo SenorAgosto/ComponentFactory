@@ -30,7 +30,7 @@ Define as many concrete implementations as needed.
 
 Setup the ComponentFactory.
 
-    using InterfaceFactory = ComponentFactory::ComponentFactory<Interface>;
+    using InterfaceFactory = component_factory::ComponentFactory<Interface>;
 
 Create components and register them with the factory. 
 
