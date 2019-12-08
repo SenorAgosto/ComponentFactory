@@ -119,19 +119,17 @@ namespace {
 		CHECK_EQUAL("world", component_5.s);
 	}
 
-	// TODO: implement this test, but it should be in a meson fail 
-	// file, those are special files declared via meson where if the code
-	// compiles, then it should fail the build.	
-	TEST(verify_construction_fails_when_not_invokable_with_supplied_params)
+	TEST(verify_construction_with_incorrect_params_returns_error_type)
 	{
 		auto factory = ComponentFactory()
 			.register_component(tag_1, [](int i){
 				return Component1();
 			});
-		
-		// ensure an error is returned if we attempt to construct
-		// a component with incorrect arguments
+
+        // constructing a component with incorrect parameter types results in Error
+        // being returned.
 		auto comp1 = factory.construct(tag_1);
+        static_assert(std::is_same<decltype(comp1), Error>::value, "Expected comp1 to be type 'Error'");
 	}
 	
 }
